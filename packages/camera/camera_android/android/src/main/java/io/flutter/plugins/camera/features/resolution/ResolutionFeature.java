@@ -118,7 +118,13 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       EncoderProfiles profile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, preset);
       List<EncoderProfiles.VideoProfile> videoProfiles = profile.getVideoProfiles();
-      EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.getAll(cameraId,0);
+      if(videoProfiles.isEmpty()) {
+        @SuppressWarnings("deprecation")
+        CamcorderProfile profileC =
+                getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, preset);
+        return new Size(profileC.videoFrameWidth, profileC.videoFrameHeight);
+      }
+      EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
 
       return new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
     } else {
@@ -239,9 +245,18 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       recordingProfile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, resolutionPreset);
       List<EncoderProfiles.VideoProfile> videoProfiles = recordingProfile.getVideoProfiles();
+      if(videoProfiles.isEmpty()){
+        @SuppressWarnings("deprecation")
+        CamcorderProfile camcorderProfile =
+                getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
+        recordingProfileLegacy = camcorderProfile;
+        captureSize =
+                new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
 
-      EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.getAll(cameraId,0);
-      captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
+      }else {
+        EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
+        captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
+      }
     } else {
       @SuppressWarnings("deprecation")
       CamcorderProfile camcorderProfile =
