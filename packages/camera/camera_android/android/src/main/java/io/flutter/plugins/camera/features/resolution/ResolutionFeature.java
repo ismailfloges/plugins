@@ -4,11 +4,14 @@
 
 package io.flutter.plugins.camera.features.resolution;
 
+
+
 import android.annotation.TargetApi;
 import android.hardware.camera2.CaptureRequest;
 import android.media.CamcorderProfile;
 import android.media.EncoderProfiles;
 import android.os.Build;
+import android.util.Log;
 import android.util.Size;
 import androidx.annotation.VisibleForTesting;
 import io.flutter.plugins.camera.CameraProperties;
@@ -37,6 +40,8 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
    * @param resolutionPreset Platform agnostic enum containing resolution information.
    * @param cameraName Camera identifier of the camera for which to configure the resolution.
    */
+
+  static private final String TAG ="Resolution feature";
   public ResolutionFeature(
       CameraProperties cameraProperties, ResolutionPreset resolutionPreset, String cameraName) {
     super(cameraProperties);
@@ -118,6 +123,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       EncoderProfiles profile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, preset);
       List<EncoderProfiles.VideoProfile> videoProfiles = profile.getVideoProfiles();
+      Log.d("", "computeBestPreviewSize: videoProfiles : "+videoProfiles);
       if(videoProfiles.isEmpty()) {
         @SuppressWarnings("deprecation")
         CamcorderProfile profileC =
