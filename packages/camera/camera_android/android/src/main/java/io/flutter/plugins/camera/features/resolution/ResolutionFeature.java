@@ -13,6 +13,8 @@ import android.media.EncoderProfiles;
 import android.os.Build;
 import android.util.Log;
 import android.util.Size;
+
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import io.flutter.plugins.camera.CameraProperties;
 import io.flutter.plugins.camera.features.CameraFeature;
@@ -195,7 +197,8 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
     }
   }
 
-  @TargetApi(Build.VERSION_CODES.S)
+//  @TargetApi(Build.VERSION_CODES.S )
+  @RequiresApi(api = Build.VERSION_CODES.S)
   public static EncoderProfiles getBestAvailableCamcorderProfileForResolutionPreset(
       int cameraId, ResolutionPreset preset) {
     if (cameraId < 0) {
