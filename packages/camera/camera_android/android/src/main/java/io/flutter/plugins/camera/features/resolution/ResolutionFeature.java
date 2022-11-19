@@ -125,8 +125,8 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       EncoderProfiles profile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, preset);
       List<EncoderProfiles.VideoProfile> videoProfiles = profile.getVideoProfiles();
-      Log.d("", "computeBestPreviewSize: videoProfiles : "+videoProfiles);
-      if(videoProfiles.isEmpty()) {
+      Log.i("", "computeBestPreviewSize: videoProfiles : "+videoProfiles);
+      if(videoProfiles.get(0) == null) {
         @SuppressWarnings("deprecation")
         CamcorderProfile profileC =
                 getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, preset);
@@ -254,7 +254,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       recordingProfile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, resolutionPreset);
       List<EncoderProfiles.VideoProfile> videoProfiles = recordingProfile.getVideoProfiles();
-      if(videoProfiles.isEmpty()){
+      if(videoProfiles.get(0) == null){
         @SuppressWarnings("deprecation")
         CamcorderProfile camcorderProfile =
                 getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);

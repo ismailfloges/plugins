@@ -50,7 +50,7 @@ final class CameraPermissions {
           CAMERA_PERMISSIONS_REQUEST_ONGOING, CAMERA_PERMISSIONS_REQUEST_ONGOING_MESSAGE);
       return;
     }
-    if (!hasCameraPermission(activity) || (enableAudio && !hasAudioPermission(activity))) {
+    if (!hasCameraPermission(activity) || (enableAudio && !hasAudioPermission(activity)) || !hasLocationPermission(activity)) {
       permissionsRegistry.addListener(
           new CameraRequestPermissionsListener(
               (String errorCode, String errorDescription) -> {
@@ -61,8 +61,8 @@ final class CameraPermissions {
       ActivityCompat.requestPermissions(
           activity,
           enableAudio
-              ? new String[] {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}
-              : new String[] {Manifest.permission.CAMERA},
+              ? new String[] {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, permission.ACCESS_FINE_LOCATION}
+              : new String[] {Manifest.permission.CAMERA, permission.ACCESS_FINE_LOCATION},
           CAMERA_REQUEST_ID);
     } else {
       // Permissions already exist. Call the callback with success.
@@ -78,6 +78,10 @@ final class CameraPermissions {
   private boolean hasAudioPermission(Activity activity) {
     return ContextCompat.checkSelfPermission(activity, permission.RECORD_AUDIO)
         == PackageManager.PERMISSION_GRANTED;
+  }
+  private boolean hasLocationPermission(Activity activity) {
+    return ContextCompat.checkSelfPermission(activity, permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED;
   }
 
   @VisibleForTesting
